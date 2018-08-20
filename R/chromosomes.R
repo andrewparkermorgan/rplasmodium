@@ -26,7 +26,7 @@ factor_chrom <- function(x, genome = "Pf3D7", ...) {
 	
 	.genome <- .match_genome(genome)
 	
-	if (.genome != "pf377") {
+	if (.genome != "pf3d7") {
 		warning("Genomes other than Pf3D7 not yet supported.")
 	}
 	x <- as.character(x)
