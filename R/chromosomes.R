@@ -1,5 +1,22 @@
 # chromosomes.R
 
+#' Guess a specific genome assembly from given character string.
+.match_genome <- function(g) {
+	possible <- c(
+		"PF" = "pf3d7",
+		"3D7" = "pf3d7",
+		"PF3D7" = "pf3d7",
+		"FALCIPARUM" = "pf3d7",
+		"PFAL" = "pf3d7"
+	)
+	gg <- toupper(g[1])
+	m <- pmatch(gg, names(possible), nomatch = FALSE)
+	if (any(m))
+		return(unname(possible[m]))
+	else
+		stop("Can't find a sensible match for genome '",g,"'.")
+}
+
 #' Sanitize chromosome names
 #' 
 #' Convert a vector of chromosome names in some sensible format to "nice" names in karyotype order.
@@ -7,7 +24,9 @@
 #' @export
 factor_chrom <- function(x, genome = "Pf3D7", ...) {
 	
-	if (genome != "Pf3D7") {
+	.genome <- .match_genome(genome)
+	
+	if (.genome != "pf377") {
 		warning("Genomes other than Pf3D7 not yet supported.")
 	}
 	x <- as.character(x)
@@ -18,7 +37,7 @@ factor_chrom <- function(x, genome = "Pf3D7", ...) {
 	x <- gsub("^M.+", "M", x)
 	x <- factor(x, levels = c(1:14, "A", "M"))
 	class(x) <- c(class(x), "chrom")
-	attr(x, "genome") <- genome
+	attr(x, "genome") <- .genome
 	return(x)
 	
 }
@@ -26,27 +45,28 @@ factor_chrom <- function(x, genome = "Pf3D7", ...) {
 #' Check if chromosome names are in nuclear genome
 #' 
 #' @export
-is_nuclear <- function(x, species = c("pf","pv"), ...) {
+is_nuclear <- function(x, genome = "pf3d7", ...) {
 	
-	species <- match.arg(species)
+	.genome <- match.arg(genome)
 	
 	if (!inherits(x, "chrom"))
 		x <- factor_chrom(x)
 	
-	if (species %in% c("pf","pv"))
+	if (.genome %in% c("pf3d7"))
 		x %in% 1:14
 	else
-		stop("Speices other than P. falciparum and P. vivax not yet supported.")
+		stop("Genome '",.genome,"' not yet supported.")
 	
 }
 
 #' Get named vector of chromosome sizes in specified genome assembly
 #'
 #' @export
-chromsizes <- function(genome = "Pf3D7", clean_names = FALSE, ...) {
+chromsizes <- function(genome = "pf3d7", clean_names = FALSE, ...) {
 	
-	genome <- match.arg(toupper(genome), c("3D7","PF3D7"))
-	if (genome %in% c("PF3D7","3D7")) {
+	.genome <- .match_genome(genome)
+		
+	if (genome == "pf3d7") {
 		chroms <- c("Pf3D7_01_v3"     = 640851,
 					"Pf3D7_02_v3"     = 947102,
 					"Pf3D7_03_v3"     = 1067971,
@@ -80,5 +100,5 @@ chromsizes <- function(genome = "Pf3D7", clean_names = FALSE, ...) {
 #'
 #'@export
 chromsizes_3d7 <- function(...) {
-	chromsizes("Pf3D7")
+	chromsizes("pf3d7")
 }
