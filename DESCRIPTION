@@ -1,0 +1,13 @@
+Package: rplasmodium
+Title: Dumb Utility Functions for Malaria Genomics
+Version: 0.0.1
+Authors@R: person("Andrew", "Morgan", email = "andrew.parker.morgan@gmail.com", role = c("aut", "cre"))
+Description: A collection of simple utility functions for cleaning, inspecting and plotting data from malaria (genus Plasmodium).
+Depends: R (>= 3.3.2)
+Imports:
+	ggplot2,
+	scales
+License: MIT
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.0
