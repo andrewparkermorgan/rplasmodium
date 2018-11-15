@@ -6,6 +6,14 @@
 \usage{
 scale_x_genome(..., scale = 1000)
 }
+\arguments{
+\item{...}{passed through to \code{ggplot2::scale_x_continuous()}}
+
+\item{scale}{integer; label scale in units of this many base pairs (1e3 = kb, 1e6 = Mb, etc)}
+}
+\value{
+a \code{ggplot2} scale object
+}
 \description{
 Sensible continuous horizontal axis for genomic coordinates
 }

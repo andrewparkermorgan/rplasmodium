@@ -4,7 +4,18 @@
 \alias{is_nuclear}
 \title{Check if chromosome names are in nuclear genome}
 \usage{
-is_nuclear(x, species = c("pf", "pv"), ...)
+is_nuclear(x, genome = "pf3d7", ...)
+}
+\arguments{
+\item{x}{a vector of chromosome identifiers}
+
+\item{genome}{with what genome are we working?}
+
+\item{...}{ignored}
+}
+\value{
+a logical vector of same length as \code{x} that is \code{TRUE} if the corresponding entry
+  looks like a nuclear chromosome and \code{FALSE} if not. \code{NA}s are preserved.
 }
 \description{
 Check if chromosome names are in nuclear genome

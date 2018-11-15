@@ -4,7 +4,19 @@
 \alias{factor_chrom}
 \title{Sanitize chromosome names}
 \usage{
-factor_chrom(x, genome = "Pf3D7", ...)
+factor_chrom(x, clean_names = TRUE, genome = "pf3d7", ...)
+}
+\arguments{
+\item{x}{a vector containing chromosome identifiers}
+
+\item{clean_names}{logical; if \code{TRUE}, scrub names like 'Pf3D7_01_v3','Pf3D7_02_v3' to '1','2'}
+
+\item{genome}{identifier for a genome whose chromosome complement determines the levels of this factor}
+
+\item{...}{ignored}
+}
+\value{
+a factor whose levels are the chromosomes in the desired genome, in karyotype order
 }
 \description{
 Convert a vector of chromosome names in some sensible format to "nice" names in karyotype order.

@@ -4,7 +4,20 @@
 \alias{chromsizes}
 \title{Get named vector of chromosome sizes in specified genome assembly}
 \usage{
-chromsizes(genome = "Pf3D7", clean_names = FALSE, ...)
+chromsizes(genome = "pf3d7", clean_names = FALSE, as_seqinfo = FALSE,
+  ...)
+}
+\arguments{
+\item{genome}{identifier for a genome assembly}
+
+\item{clean_names}{logical; if \code{TRUE}, scrub chromosome names like 'Pf3D7_01_v3','Pf3D7_02_v3' to '1','2'}
+
+\item{as_seqinfo}{logical; if \code{TRUE}, return a \code{GenomeInfoDb::Seqinfo} object instead of a named vector}
+
+\item{...}{ignored}
+}
+\value{
+a named vector of chromosome lengths in base pairs
 }
 \description{
 Get named vector of chromosome sizes in specified genome assembly

@@ -2,6 +2,11 @@
 
 #' Sensible continuous horizontal axis for genomic coordinates
 #' 
+#' @param ... passed through to \code{ggplot2::scale_x_continuous()}
+#' @param scale integer; label scale in units of this many base pairs (1e3 = kb, 1e6 = Mb, etc)
+#' 
+#' @return a \code{ggplot2} scale object
+#' 
 #' @export
 scale_x_genome <- function(..., scale = 1e3) {
 	

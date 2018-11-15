@@ -6,6 +6,12 @@
 \usage{
 chromsizes_3d7(...)
 }
+\arguments{
+\item{...}{ignored}
+}
+\value{
+Shortcut to return chromosome sizes in Pf3D7 assembly
+}
 \description{
 Shortcut to chromosome sizes for Pf3D7 assembly
 }
