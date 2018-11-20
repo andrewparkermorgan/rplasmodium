@@ -2,9 +2,12 @@
 % Please edit documentation in R/chromosomes.R
 \name{factor_chrom}
 \alias{factor_chrom}
+\alias{is_chrom}
 \title{Sanitize chromosome names}
 \usage{
 factor_chrom(x, clean_names = TRUE, genome = "pf3d7", ...)
+
+is_chrom(x, ...)
 }
 \arguments{
 \item{x}{a vector containing chromosome identifiers}
@@ -20,4 +23,7 @@ a factor whose levels are the chromosomes in the desired genome, in karyotype or
 }
 \description{
 Convert a vector of chromosome names in some sensible format to "nice" names in karyotype order.
+}
+\details{
+A vector blessed as a chromosome by \code{factor_chrom()} can be confirmed with \code{is_chrom()}.
 }

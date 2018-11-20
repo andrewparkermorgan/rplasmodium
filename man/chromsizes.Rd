@@ -4,6 +4,8 @@
 \alias{chromsizes}
 \alias{chromsizes_3d7}
 \alias{chromsizes_sal1}
+\alias{chromsizes_p01}
+\alias{chromsizes_cM}
 \title{Get named vector of chromosome sizes in specified genome assembly}
 \usage{
 chromsizes(genome = "pf3d7", clean_names = FALSE, as_seqinfo = FALSE,
@@ -12,6 +14,10 @@ chromsizes(genome = "pf3d7", clean_names = FALSE, as_seqinfo = FALSE,
 chromsizes_3d7(...)
 
 chromsizes_sal1(...)
+
+chromsizes_p01(...)
+
+chromsizes_cM(..., clean_names = FALSE, genome = "pf3d7")
 }
 \arguments{
 \item{genome}{identifier for a genome assembly}
@@ -23,7 +29,7 @@ chromsizes_sal1(...)
 \item{...}{ignored}
 }
 \value{
-a named vector of chromosome lengths in base pairs
+a named vector of chromosome lengths in base pairs or (in case of \code{chromsizes_cM()}) in centimorgans
 }
 \description{
 Get named vector of chromosome sizes in specified genome assembly
