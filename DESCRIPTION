@@ -6,7 +6,8 @@ Description: A collection of simple utility functions for cleaning, inspecting a
 Depends: R (>= 3.3.2)
 Imports:
 	ggplot2,
-	scales
+	scales,
+	countrycode
 License: MIT
 Encoding: UTF-8
 LazyData: true

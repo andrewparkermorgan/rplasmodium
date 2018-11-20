@@ -2,10 +2,16 @@
 % Please edit documentation in R/chromosomes.R
 \name{chromsizes}
 \alias{chromsizes}
+\alias{chromsizes_3d7}
+\alias{chromsizes_sal1}
 \title{Get named vector of chromosome sizes in specified genome assembly}
 \usage{
 chromsizes(genome = "pf3d7", clean_names = FALSE, as_seqinfo = FALSE,
   ...)
+
+chromsizes_3d7(...)
+
+chromsizes_sal1(...)
 }
 \arguments{
 \item{genome}{identifier for a genome assembly}

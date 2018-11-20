@@ -7,9 +7,14 @@
 		"3D7" = "pf3d7",
 		"PF3D7" = "pf3d7",
 		"FALCIPARUM" = "pf3d7",
-		"PFAL" = "pf3d7"
+		"PFAL" = "pf3d7",
+		"PVSAL1" = "pvsal1",
+		"PV" = "pvsal1",
+		"SAL1" = "pvsal1",
+		"VIVAX" = "pvsal1"
 	)
 	gg <- toupper(g[1])
+	gg <- gsub("_", "", gg)
 	m <- pmatch(gg, names(possible), nomatch = FALSE)
 	if (any(m))
 		return(unname(possible[m]))
@@ -33,21 +38,27 @@ factor_chrom <- function(x, clean_names = TRUE, genome = "pf3d7", ...) {
 	
 	.genome <- .match_genome(genome)
 	
-	if (.genome != "pf3d7") {
-		warning("Genomes other than 'pf3d7' not yet supported.")
+	if (!(.genome %in% c("pf3d7","pvsal1"))) {
+		warning("Genomes other than 'pf3d7','pvsal1' not yet supported.")
 	}
 	x <- as.character(x)
 	
 	if (clean_names) {
-		x <- gsub("^Pf(?:3D7)*_(.+)_.+", "\\1", x, perl = TRUE)
-		x <- gsub("^Pf_(.+)", "\\1", x, perl = TRUE)
+		if (.genome == "pf3d7") {
+			x <- gsub("^Pf(?:3D7)*_(.+)_.+", "\\1", x, perl = TRUE)
+			x <- gsub("^Pf_(.+)", "\\1", x, perl = TRUE)
+		}
+		else if (.genome == "pvsal1") {
+			x <- gsub("^Pv_Sal1_chr", "", x, perl = TRUE)
+			x <- gsub("^PVAD80_", "", x, perl = TRUE)
+		}
 		x <- gsub("^0", "", x)
 		x <- gsub("^A.+", "A", x)
 		x <- gsub("^M.+", "M", x)
-		x <- factor(x, levels = c(1:14, "A", "M"))
+		x <- factor(x, levels = c(1:14, "M", "A"))
 	}
 	else {
-		x <- factor(x, levels = chromnames(FALSE))
+		x <- factor(x, levels = chromnames(clean_names = FALSE, genome = .genome))
 	}
 	class(x) <- c(class(x), "chrom")
 	attr(x, "genome") <- .genome
@@ -67,12 +78,12 @@ factor_chrom <- function(x, clean_names = TRUE, genome = "pf3d7", ...) {
 #' @export
 is_nuclear <- function(x, genome = "pf3d7", ...) {
 	
-	.genome <- match.arg(genome)
+	.genome <- .match_genome(genome)
 	
 	if (!inherits(x, "chrom"))
 		x <- factor_chrom(x, clean_names = TRUE)
 	
-	if (.genome %in% c("pf3d7"))
+	if (.genome %in% c("pf3d7","pvsal1"))
 		x %in% 1:14
 	else
 		stop("Genome '", .genome,"' not yet supported.")
@@ -90,19 +101,28 @@ is_nuclear <- function(x, genome = "pf3d7", ...) {
 #' @export
 chromnames <- function(clean_names = FALSE, genome = "pf3d7", ...) {
 	
-	.genome <- match.arg(genome)
+	.genome <- .match_genome(genome)
+	
+	# have to do this manually because apparently sprintf() leading zeros for integers
+	#  are not guaranteed across platforms ...
+	nums <- c("01","02","03","04","05","06","07",
+			  "08","09","10","11","12","13","14")
 	
 	if (.genome == "pf3d7") {
-		# have to do this manually because apparently sprintf() leading zeros for integers
-		#  are not guaranteed across platforms ...
-		nums <- c("01","02","03","04","05","06","07",
-				  "08","09","10","11","12","13","14")
 		chroms <- paste0("Pf3D7_", nums, "_v3")
-		chroms <- c(chroms, "Pf3D7_API_v3", "Pf_M76611")
+		chroms <- c(chroms, "Pf_M76611", "Pf3D7_API_v3")
 		if (!clean_names)
 			return(chroms)
 		else
-			return(c(1:14,"A","M"))
+			return(c(1:14,"M","A"))
+	}
+	else if (.genome == "pvsal1") {
+		chroms <- paste0("Pv_Sal1_chr", nums)
+		chroms <- c(chroms, "PVAD80_MIT")
+		if (!clean_names)
+			return(chroms)
+		else
+			return(c(1:14,"M"))
 	}
 	else {
 		stop("Genome '", .genome,"' not yet supported.")
@@ -139,38 +159,61 @@ chromsizes <- function(genome = "pf3d7", clean_names = FALSE, as_seqinfo = FALSE
 					"Pf3D7_12_v3"     = 2271494L,
 					"Pf3D7_13_v3"     = 2925236L,
 					"Pf3D7_14_v3"     = 3291936L,
-					"Pf3D7_API_v3"    = 34250L,
-					"Pf_M76611"       = 5967L)
-		
-		if (clean_names) {
-			names(chroms) <- as.character(factor_chrom(names(chroms), genome = .genome))
-		}
-		
-		if (as_seqinfo) {
-			new("Seqinfo",
-				seqnames = names(chroms),
-				seqlengths = chroms,
-				is_circular = c(rep(TRUE, 14), FALSE,FALSE),
-				genome = rep("pf3d7", length(chroms))
-			)
-		}
-		else
-			return(chroms)
-		
+					"Pf_M76611"       = 5967L,
+					"Pf3D7_API_v3"    = 34250L
+					)
+		is_circ <- c( rep(FALSE, 14), TRUE, TRUE )
+	}
+	else if (.genome == "pvsal1") {
+		chroms <- c(
+			"Pv_Sal1_chr01"	= 830022L,
+			"Pv_Sal1_chr02"	= 755035L,
+			"Pv_Sal1_chr03"	= 1011127L,
+			"Pv_Sal1_chr04"	= 876652L,
+			"Pv_Sal1_chr05"	= 1370936L,
+			"Pv_Sal1_chr06"	= 1033388L,
+			"Pv_Sal1_chr07"	= 1497819L,
+			"Pv_Sal1_chr08"	= 1678596L,
+			"Pv_Sal1_chr09"	= 1923364L,
+			"Pv_Sal1_chr10"	= 1419739L,
+			"Pv_Sal1_chr11"	= 2067354L,
+			"Pv_Sal1_chr12"	= 3004884L,
+			"Pv_Sal1_chr13"	= 2031768L,
+			"Pv_Sal1_chr14"	= 3120417L,
+			"PVAD80_MIT"	= 5990L
+		)
+		is_circ <- c( rep(FALSE, 14), TRUE )
 	}
 	else {
 		stop("Specified genome not supported.")
 	}
 	
+	if (clean_names) {
+		names(chroms) <- as.character(factor_chrom(names(chroms), genome = .genome))
+	}
+	
+	if (as_seqinfo) {
+		new("Seqinfo",
+			seqnames = names(chroms),
+			seqlengths = chroms,
+			is_circular = is_circ,
+			genome = rep(.genome, length(chroms))
+		)
+	}
+	else
+		return(chroms)
+	
 }
 
-#' Shortcut to chromosome sizes for Pf3D7 assembly
-#' 
-#' @param ... ignored
-#' 
-#' @return Shortcut to return chromosome sizes in Pf3D7 assembly
-#' 
+#' @rdname chromsizes
 #' @export
 chromsizes_3d7 <- function(...) {
 	chromsizes("pf3d7")
 }
+
+#' @rdname chromsizes
+#' @export
+chromsizes_sal1 <- function(...) {
+	chromsizes("pvsal1")
+}
+
