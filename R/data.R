@@ -47,12 +47,13 @@
 
 #' Putative drug resistance loci for the P. falciparum genome, Pf3D7 assembly
 #'
-#' @format A \code{tibble} (inherits from data frame) with 5 columns:
+#' @format A \code{tibble} (inherits from data frame) with 6 columns:
 #' \describe{
 #'   \item{chr}{chromosome names, as ordered factor (\code{pf3d7} assembly)}
 #'   \item{start}{start position of interval, 0-based, left-closed}
 #'   \item{end}{end position of interval, 0-based, right-open}
 #'   \item{strand}{genetic strand oreintation},
+#'   \item{name}{common name of mutation}
 #'    \item{geneid}{PlasmoDB gene identification}
 #'    
 "pf_3d7_PutDrugRxSites"
@@ -60,12 +61,13 @@
 
 #' Putative drug resistance loci for the P. vivax genome, PvSal1 assembly
 #'
-#' @format A \code{tibble} (inherits from data frame) with 5 columns:
+#' @format A \code{tibble} (inherits from data frame) with 6 columns:
 #' \describe{
 #'   \item{chr}{chromosome names, as ordered factor (\code{pvsal1} assembly)}
 #'   \item{start}{start position of interval, 0-based, left-closed}
 #'   \item{end}{end position of interval, 0-based, right-open}
 #'   \item{strand}{genetic strand oreintation},
+#'   \item{name}{common name of mutation}
 #'    \item{geneid}{PlasmoDB gene identification}
 #'    
 "pv_sal1.PutDrugResSites"
@@ -73,12 +75,13 @@
 
 #' Putative drug resistance loci for the P. vivax genome, PvP01 assembly
 #'
-#' @format A \code{tibble} (inherits from data frame) with 5 columns:
+#' @format A \code{tibble} (inherits from data frame) with 6 columns:
 #' \describe{
 #'   \item{chr}{chromosome names, as ordered factor (\code{pvp01} assembly)}
 #'   \item{start}{start position of interval, 0-based, left-closed}
 #'   \item{end}{end position of interval, 0-based, right-open}
 #'   \item{strand}{genetic strand oreintation},
+#'   \item{name}{common name of mutation}
 #'    \item{geneid}{PlasmoDB gene identification}
 #'    
 "pv_p01.PutDrugResSites"
