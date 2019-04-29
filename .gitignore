@@ -1,0 +1,14 @@
+######################
+# macOS generated files #
+######################
+.DS_Store
+################################
+# R specific files and folders #
+################################
+^.*\.Rproj$
+^\.Rproj\.user$
+.Rproj.user
+.Rhistory
+.Ruserdata
+
+
